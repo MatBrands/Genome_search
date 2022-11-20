@@ -6,6 +6,7 @@ Ela consiste em uma aplicação cliente-servidor simulando o funcionamento de um
 
 Conteúdo:
 - Requisitos
+- Recomendações
 - Integrantes
 - Instalação
 - Organização do projeto
@@ -15,6 +16,14 @@ Conteúdo:
 - [ ] Comunicação via TCP ou UDP;
 - [ ] Documentação do protocolo da camada de aplicação;
 - [ ] Documentação do funcionamento do software.
+
+## Recomendações
+- Cada desenvolvedor terá sua branch para ficar a vontade para inserir novas funcionalidades ao projeto.
+- Ao desenvolver uma nova funcionalidade o dev deverá solicitar o Pull Request comentando o que foi feito.
+- Em relação aos commits será utilizado um padrão
+    - Commits de novas features. Ex: git commit -m "New: Readme"
+    - Commits de updates. Ex: git commit -m "Update: Readme"
+    - Commits de remoção. Ex: git commit -m "Removed: Readme"
 
 ## Integrantes
 
@@ -43,6 +52,8 @@ conda deactivate
 ```
 
 ## Organização do projeto
+
+
 
 Cliente ...
 
