@@ -1,0 +1,7 @@
+name: genome_search-venv
+channels:
+  - conda-forge
+dependencies:
+  - python
+  - pip
+  - json
