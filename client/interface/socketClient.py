@@ -1,6 +1,6 @@
 from socket import *
 
-class SocketClient():
+class SocketClient:
     def __init__(self, host = 'localhost', port = 6666):
         self.setup(host, port)
 
