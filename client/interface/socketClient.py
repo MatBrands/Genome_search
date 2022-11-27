@@ -29,10 +29,5 @@ class SocketClient:
         items = data[:message_size]
         data = data[message_size:]
 
-        item = pc.loads(items)
-
-        for item in item:
-            print(item)
-
         self.socket.close()
-        print('Finalizado.')
+        return pc.loads(items)
