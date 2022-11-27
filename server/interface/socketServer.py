@@ -53,7 +53,7 @@ class SocketServer:
             
     def set_file(self, socket):
         name = socket.recv(1024).decode()
-        print(name)
+        
         with open(self.db_dir + name + '.fasta', 'wb') as arq:
             data = True
             while data:
