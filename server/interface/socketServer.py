@@ -10,7 +10,7 @@ class SocketServer:
         self.socket = socket(AF_INET, SOCK_STREAM)
         try:
             self.socket.bind((host, port))
-        except Exception as e:
+        except:
             print('Erro ao ligar um servidor!')
             exit()
         self.socket.listen()
