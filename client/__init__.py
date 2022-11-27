@@ -10,7 +10,7 @@ def parametros_menu(titulo: list, itens: list):
 
 if __name__ == '__main__':
     title = ['Selecione uma opção: ']
-    itens = ['Listar genomas', 'Buscar genoma (Download)', 'Cadastrar genoma (Upload)', 'Sair']
+    itens = ['Buscar genoma (Download)', 'Cadastrar genoma (Upload)', 'Sair']
     while True:
         menu_item = parametros_menu(title, itens)
         # client_socket = SocketClient()
@@ -18,8 +18,6 @@ if __name__ == '__main__':
         if menu_item == 0:
             pass
         elif menu_item == 1:
-            pass
-        elif menu_item == 2:
             pass
         else:
             break

@@ -1,4 +1,6 @@
 from socket import *
+import pickle
+import os
 
 class SocketServer:
     def __init__(self, host = 'localhost', port = 6666):
@@ -19,6 +21,8 @@ class SocketServer:
         message = connect.recv(1024)
 
         if message.decode() == 'get_items':
+            filenames = self.get_items()
+            # Enviar elementos
             pass
 
         elif message.decode() == 'set_file':
@@ -28,3 +32,8 @@ class SocketServer:
             pass
 
         connect.close()
+        
+    def get_items():
+        filenames = [filenames for (_, _, filenames) in os.walk(os.path.curdir + '/database')][0]
+        filenames = [item.replace('.fasta', '') for item in filenames]
+        return filenames
