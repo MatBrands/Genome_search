@@ -6,10 +6,11 @@ import time
 
 
 class SocketClient:
-    def __init__(self, host=gethostbyname(gethostname()), port=55551):
+    def __init__(self, host=gethostbyname(gethostname()), port=55552):
         self.db_dir = os.path.curdir + '/'
         self.host = host
         self.port = port
+        self.db_server = '../../server/database'
 
     def setup(self, host: str, port: int):
         self.socket = socket(AF_INET, SOCK_STREAM)
@@ -48,27 +49,24 @@ class SocketClient:
         self.setup(self.host, self.port)
         self.socket.send(b'get_file')
         time.sleep(0.01)
-        with open(name + '.fasta', 'wb') as arq:
+        with open(f'../client_storage/{name}.fasta', 'w') as arq:
             self.socket.send(name.encode())
             data = True
             while data:
                 time.sleep(0.01)
-                data = self.socket.recv(1024)
+                data = self.socket.recv(1024).decode()
                 arq.write(data)
 
         self.socket.close()
 
-    def set_file(self, name):
-        self.setup(self.host, self.port)
+    def set_file(self, name, genoma):
         self.socket.send(b'set_file')
-        time.sleep(0.01)
 
-        with open(self.db_dir + arq_path + '.fasta', 'rb') as arq:
-            self.socket.send(name.encode())
-            lenght = arq.read(1024)
-            while lenght:
-                time.sleep(0.01)
-                self.socket.send(lenght)
-                lenght = arq.read(1024)
+        time.sleep(1)
 
+        self.socket.send(name.encode())
+
+        time.sleep(1)
+
+        self.socket.send(genoma.encode())
         self.socket.close()
