@@ -1,7 +1,7 @@
 from interface.socketServer import *
 
 if __name__ == '__main__':
-    server = socketServer()
+    server = SocketServer()
     
     while True:
-        socket.startServer()
+        server.startServer()
