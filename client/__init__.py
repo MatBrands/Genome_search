@@ -19,7 +19,7 @@ def menu_genoma(socket):
             print('Todos os genomas catalogados: ')
             for item in list_of_items_db:
                 print(item)
-            input('Para retornar digite alguma tecla')
+            input('Digite qualquer tecla para retornar')
         elif menu_item == 1:
             # Busca
             name = input('Digite o nome científico ou o popular: ')
@@ -45,23 +45,26 @@ def buscar_genoma(socket, name, list_of_items_db):
 
 
 def cadastrar_genoma(socket):
-    nome_cientifico = input('Digite o nome científico: ')
-    nome_popular = input('Digite o nome popular: ')
-    arq_fasta = input('Digite o local a localização do arquivo: ')
-    if nome_cientifico and nome_popular and arq_fasta:
-        nome = nome_cientifico + ' - ' + nome_popular
-        socket.set_file(nome, arq_fasta)
+    nome_especie = input('Digite o nome científico ou nome popular ')
+    if nome_especie:
+        socket.set_file(nome_especie)
         print(f'Upload do genoma {nome} foi um sucesso')
         input()
 
 
 if __name__ == '__main__':
+    client_socket = SocketClient()
+
+    if not client_socket.setup(host=gethostbyname(gethostname()), port=55551):
+        print('Servidor não encontrado')
+        exit()
+
     title = ['Selecione uma opção: ']
     itens = ['Buscar genoma (Download)', 'Cadastrar genoma (Upload)', 'Sair']
     print('Bem vindo, bla bla bla')
     while True:
         menu_item = parametros_menu(title, itens)
-        client_socket = SocketClient()
+        #client_socket = SocketClient()
 
         if menu_item == 0:
             menu_genoma(client_socket)

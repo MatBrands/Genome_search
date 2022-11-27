@@ -4,23 +4,29 @@ import pickle as pc
 import struct as st
 import time
 
-
 class SocketServer:
-    def __init__(self, host='localhost', port=6666):
+    def __init__(self, host=gethostbyname(gethostname()), port=55551):
         self.db_dir = os.path.curdir + '/database/'
         self.setup(host, port)
 
     def setup(self, host: str, port: int):
-        self.socket = socket()
+        self.socket = socket(AF_INET, SOCK_STREAM)
+
         try:
             self.socket.bind((host, port))
         except:
             print('Erro ao ligar o servidor!')
             exit()
+
+        print('Servidor Funcionando')
+        time.sleep(2)
+        os.system("clear")
+        print('Servidor aguardando conexão de cliente ...')
         self.socket.listen()
-        print('Server ready')
+
 
     def startServer(self):
+        self.setup(host=gethostbyname(gethostname()), port=55551)
 
         while True:
             connection_, _ = self.socket.accept()
@@ -54,6 +60,13 @@ class SocketServer:
 
     def set_file(self, socket):
         name = socket.recv(1024).decode()
+
+        try:
+            with open(self.db_dir + name + '.fasta', 'rb') as arq:
+                dados = arq.readfile()
+        except FileNotFoundError:
+            msg = 'Arquivo não existe'
+            socket.send(msg.encode())
 
         with open(self.db_dir + name + '.fasta', 'wb') as arq:
             data = True

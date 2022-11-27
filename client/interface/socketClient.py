@@ -6,14 +6,19 @@ import time
 
 
 class SocketClient:
-    def __init__(self, host='localhost', port=6666):
+    def __init__(self, host=gethostbyname(gethostname()), port=55551):
         self.db_dir = os.path.curdir + '/'
         self.host = host
         self.port = port
 
     def setup(self, host: str, port: int):
-        self.socket = socket()
-        self.socket.connect((host, port))
+        self.socket = socket(AF_INET, SOCK_STREAM)
+
+        try:
+            self.socket.connect((host, port))
+            return True
+        except ConnectionRefusedError:
+            return False
 
     def get_items(self):
         self.setup(self.host, self.port)
@@ -53,13 +58,11 @@ class SocketClient:
 
         self.socket.close()
 
-    def set_file(self, name, arq_path):
-        if not os.path.exists(self.db_dir + arq_path + '.fasta'):
-            input('Arquivo não existe')
-            return
+    def set_file(self, name):
         self.setup(self.host, self.port)
         self.socket.send(b'set_file')
         time.sleep(0.01)
+
         with open(self.db_dir + arq_path + '.fasta', 'rb') as arq:
             self.socket.send(name.encode())
             lenght = arq.read(1024)

@@ -8,11 +8,11 @@ class Menu:
         pass
 
     def on_press(self, key):
-        if (str(key) == 'Key.up'):
+        if str(key) == 'Key.up':
             self.option -= 1
-        elif (str(key) == 'Key.down'):
+        elif str(key) == 'Key.down':
             self.option += 1
-        elif (str(key) == 'Key.enter'):
+        elif str(key) == 'Key.enter':
             self.acess = True
 
         return False
