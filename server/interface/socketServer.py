@@ -2,6 +2,7 @@ from socket import *
 import os
 import pickle as pc
 import struct as st
+import time
 
 class SocketServer:
     def __init__(self, host = 'localhost', port = 6666):
@@ -27,7 +28,7 @@ class SocketServer:
             if message == 'get_items':
                 self.get_items(connection_)
             elif message == 'set_file':
-                pass
+                self.set_file(connection_)
             elif message == 'get_file':
                 self.get_file(connection_)
             
@@ -46,5 +47,16 @@ class SocketServer:
         with open(self.db_dir + name + '.fasta', 'rb') as arq:
             lenght = arq.read(1024)
             while lenght:
+                time.sleep(0.01)
                 socket.send(lenght)
                 lenght = arq.read(1024)
+            
+    def set_file(self, socket):
+        name = socket.recv(1024).decode()
+        print(name)
+        with open(self.db_dir + name + '.fasta', 'wb') as arq:
+            data = True
+            while data:
+                time.sleep(0.01)
+                data = socket.recv(1024)
+                arq.write(data)

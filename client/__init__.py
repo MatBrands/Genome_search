@@ -37,9 +37,18 @@ def buscar_genoma(socket, name, list_of_items_db):
         menu_item = parametros_menu(['Selecione o genoma para download: '], resultado)
         if menu_item != len(resultado)-1:
             socket.get_file(resultado[menu_item])
-            # Agr a gente baixa
             print(f'Download do genoma {resultado[menu_item]} foi um sucesso')
             input()
+    
+def cadastrar_genoma(socket):
+    nome_cientifico = input('Digite o nome científico: ')
+    nome_popular = input('Digite o nome popular: ')
+    arq_fasta = input('Digite o local a localização do arquivo: ')
+    if nome_cientifico and nome_popular and arq_fasta:
+        nome = nome_cientifico + ' - ' + nome_popular
+        socket.set_file(nome, arq_fasta)
+        print(f'Upload do genoma {nome} foi um sucesso')
+        input()
     
 if __name__ == '__main__':
     title = ['Selecione uma opção: ']
@@ -52,6 +61,6 @@ if __name__ == '__main__':
         if menu_item == 0:
             menu_genoma(client_socket)
         elif menu_item == 1:
-            pass
+            cadastrar_genoma(client_socket)
         else:
             break

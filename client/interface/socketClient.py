@@ -1,9 +1,12 @@
 from socket import *
 import pickle as pc
 import struct as st
+import os
+import time
 
 class SocketClient:
     def __init__(self, host = 'localhost', port = 6666):
+        self.db_dir = os.path.curdir + '/'
         self.host = host
         self.port = port
 
@@ -38,13 +41,30 @@ class SocketClient:
     def get_file(self, name: str):
         self.setup(self.host, self.port)
         self.socket.send(b'get_file')
-        
+        time.sleep(0.01)
         with open(name + '.fasta', 'wb') as arq:
             self.socket.send(name.encode())
-            data = 1
+            data = True
             while data:
+                time.sleep(0.01)
                 data = self.socket.recv(1024)
                 arq.write(data)
 
         self.socket.close()
         
+    def set_file(self, name, arq_path):
+        if not os.path.exists(self.db_dir + arq_path + '.fasta'):
+            input('Arquivo não existe')
+            return
+        self.setup(self.host, self.port)
+        self.socket.send(b'set_file')
+        time.sleep(0.01)
+        with open(self.db_dir + arq_path + '.fasta', 'rb') as arq:
+            self.socket.send(name.encode())
+            lenght = arq.read(1024)
+            while lenght:
+                time.sleep(0.01)
+                self.socket.send(lenght)
+                lenght = arq.read(1024)
+
+        self.socket.close()
