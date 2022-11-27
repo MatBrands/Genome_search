@@ -4,13 +4,15 @@ import struct as st
 
 class SocketClient:
     def __init__(self, host = 'localhost', port = 6666):
-        self.setup(host, port)
+        self.host = host
+        self.port = port
 
     def setup(self, host: str, port: int):
-        self.socket = socket(AF_INET, SOCK_STREAM)
+        self.socket = socket()
         self.socket.connect((host, port))
         
     def get_items(self):
+        self.setup(self.host, self.port)
         self.socket.send(b'get_items')
 
         data = b''
@@ -28,6 +30,21 @@ class SocketClient:
 
         items = data[:message_size]
         data = data[message_size:]
+        
+        self.socket.close()
+        
+        return pc.loads(items)
+    
+    def get_file(self, name: str):
+        self.setup(self.host, self.port)
+        self.socket.send(b'get_file')
+        
+        with open(name + '.fasta', 'wb') as arq:
+            self.socket.send(name.encode())
+            data = 1
+            while data:
+                data = self.socket.recv(1024)
+                arq.write(data)
 
         self.socket.close()
-        return pc.loads(items)
+        
