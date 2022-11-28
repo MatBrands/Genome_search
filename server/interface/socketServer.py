@@ -5,7 +5,7 @@ import struct as st
 import time
 
 class SocketServer:
-    def __init__(self, host=gethostbyname(gethostname()), port=55551):
+    def __init__(self, host=gethostbyname(gethostname()), port=55552):
         self.db_dir = os.path.curdir + '/database/'
         self.setup(host, port)
 
@@ -14,22 +14,23 @@ class SocketServer:
 
         try:
             self.socket.bind((host, port))
+            print('Servidor Funcionando')
+            time.sleep(3)
+            os.system('clear')
+            print('Servidor aguardando conexão ...')
         except:
             print('Erro ao ligar o servidor!')
             exit()
 
-        print('Servidor Funcionando')
-        time.sleep(2)
-        os.system("clear")
-        print('Servidor aguardando conexão de cliente ...')
         self.socket.listen()
 
 
     def startServer(self):
-        self.setup(host=gethostbyname(gethostname()), port=55551)
+        self.setup(host=gethostbyname(gethostname()), port=55552)
 
         while True:
-            connection_, _ = self.socket.accept()
+            connection_, addr = self.socket.accept()
+            print(f'Cliente: {addr} conectado')
             message = connection_.recv(1024).decode()
 
             if message == 'get_items':
@@ -51,26 +52,21 @@ class SocketServer:
     def get_file(self, socket):
         name = socket.recv(1024).decode()
 
-        with open(self.db_dir + name + '.fasta', 'rb') as arq:
+        with open(self.db_dir + name + '.fasta', 'r') as arq:
             lenght = arq.read(1024)
             while lenght:
                 time.sleep(0.01)
-                socket.send(lenght)
+                socket.send(lenght.encode())
                 lenght = arq.read(1024)
 
     def set_file(self, socket):
         name = socket.recv(1024).decode()
 
-        try:
-            with open(self.db_dir + name + '.fasta', 'rb') as arq:
-                dados = arq.readfile()
-        except FileNotFoundError:
-            msg = 'Arquivo não existe'
-            socket.send(msg.encode())
+        if os.path.exists(f'{self.db_dir} + {name} + .fasta'):
+            exit()
 
-        with open(self.db_dir + name + '.fasta', 'wb') as arq:
-            data = True
-            while data:
-                time.sleep(0.01)
-                data = socket.recv(1024)
-                arq.write(data)
+        genoma = socket.recv(1024).decode()
+
+        with open(self.db_dir + name + '.fasta', 'w') as arq:
+            arq.write(genoma)
+        return 1

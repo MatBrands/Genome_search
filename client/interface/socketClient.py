@@ -49,7 +49,7 @@ class SocketClient:
         self.setup(self.host, self.port)
         self.socket.send(b'get_file')
         time.sleep(0.01)
-        with open(f'../client_storage/{name}.fasta', 'w') as arq:
+        with open('client_storage/'+name+'.fasta', 'w') as arq:
             self.socket.send(name.encode())
             data = True
             while data:
@@ -62,11 +62,13 @@ class SocketClient:
     def set_file(self, name, genoma):
         self.socket.send(b'set_file')
 
-        time.sleep(1)
+        time.sleep(0.01)
 
         self.socket.send(name.encode())
 
-        time.sleep(1)
+        time.sleep(0.01)
 
         self.socket.send(genoma.encode())
+
         self.socket.close()
+
