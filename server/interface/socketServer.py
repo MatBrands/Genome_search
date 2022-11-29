@@ -23,7 +23,6 @@ class SocketServer:
 
         self.socket.listen()
 
-
     def startServer(self):
         self.setup(host=gethostbyname(gethostname()), port=55552)
 
