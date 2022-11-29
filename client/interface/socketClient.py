@@ -2,15 +2,13 @@ from socket import *
 import pickle as pc
 import struct as st
 import os
-import time
+from time import sleep
 
 
 class SocketClient:
     def __init__(self, host=gethostbyname(gethostname()), port=55552):
-        self.db_dir = os.path.curdir + '/'
         self.host = host
         self.port = port
-        self.db_server = '../../server/database'
 
     def setup(self, host: str, port: int):
         self.socket = socket(AF_INET, SOCK_STREAM)
@@ -47,28 +45,38 @@ class SocketClient:
 
     def get_file(self, name: str):
         self.setup(self.host, self.port)
+        
         self.socket.send(b'get_file')
-        time.sleep(0.01)
-        with open('client_storage/'+name+'.fasta', 'w') as arq:
-            self.socket.send(name.encode())
-            data = True
-            while data:
-                time.sleep(0.01)
-                data = self.socket.recv(1024).decode()
+        sleep(0.01)
+        
+        self.socket.send(name.encode())
+        sleep(0.01)
+        
+        with open(f'./storage/{name}.fasta', 'wb') as arq:    
+            while True:
+                data = self.socket.recv(1024)
+                sleep(0.01)
+                if not data:
+                    break
                 arq.write(data)
 
         self.socket.close()
 
     def set_file(self, name, genoma):
+        self.setup(self.host, self.port)
+        
         self.socket.send(b'set_file')
-
-        time.sleep(0.01)
+        sleep(0.01)
 
         self.socket.send(name.encode())
+        sleep(0.01)
 
-        time.sleep(0.01)
-
-        self.socket.send(genoma.encode())
+        with open(f'./storage/{genoma}.fasta', 'rb') as arq:
+            while True:
+                line = arq.read(1024)
+                if not line:
+                    break
+                self.socket.send(line)
+                sleep(0.01)
 
         self.socket.close()
-

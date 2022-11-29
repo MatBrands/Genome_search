@@ -22,13 +22,11 @@ def menu_genoma(socket):
                 print(item)
             input('Digite qualquer tecla para retornar')
         elif menu_item == 1:
-            # Busca
             name = input('Digite o nome científico ou o popular: \n')
             buscar_genoma(socket, name, list_of_items_db)
             break
         else:
             break
-
 
 def buscar_genoma(socket, name, list_of_items_db):
     resultado = []
@@ -45,14 +43,29 @@ def buscar_genoma(socket, name, list_of_items_db):
             print(f'Download do genoma {resultado[menu_item]} foi um sucesso')
             input()
 
-
 def cadastrar_genoma(socket):
-    nome_especie = input('Digite o nome científico ou nome popular\n')
-    genoma_especie = input('Informe o genoma da especie\n')
-
-    if nome_especie and genoma_especie:
-        socket.set_file(nome_especie, genoma_especie)
-        print(f'Upload do genoma {nome_especie} foi cadastrado')
+    nome_especie = input('Digite o nome científico da espécie\n')
+    if not nome_especie:
+        input('Erro ! Entrada inválida, tecle para sair ...\n')
+        return
+    nome_popular = input('Digite o nome popular da espécie\n')
+    if not nome_popular:
+        input('Erro ! Entrada inválida, tecle para sair ...\n')
+        return
+    
+    filenames = [filenames for (_, _, filenames) in os.walk('./storage/')][0]
+    filenames = [item.replace('.fasta', '') for item in filenames]
+    
+    if not filenames:
+        input('Erro ! Arquivos inválidos, tecle para sair ...\n')
+        return
+    
+    nome = f'{nome_especie}: {nome_popular}'
+    genoma_especie = parametros_menu(['Selecione o arquivo que deseja enviar:'], filenames)
+    genoma_especie = filenames[genoma_especie]
+    
+    socket.set_file(nome, genoma_especie)
+    input(f'Upload do genoma {nome} foi cadastrado')
 
 
 if __name__ == '__main__':

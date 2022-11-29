@@ -2,11 +2,10 @@ from socket import *
 import os
 import pickle as pc
 import struct as st
-import time
+from time import *
 
 class SocketServer:
     def __init__(self, host=gethostbyname(gethostname()), port=55552):
-        self.db_dir = os.path.curdir + '/database/'
         self.setup(host, port)
 
     def setup(self, host: str, port: int):
@@ -14,8 +13,8 @@ class SocketServer:
 
         try:
             self.socket.bind((host, port))
-            print('Servidor Funcionando')
-            time.sleep(3)
+            print('Servidor ligando')
+            sleep(1)
             os.system('clear')
             print('Servidor aguardando conexão ...')
         except:
@@ -43,30 +42,33 @@ class SocketServer:
             connection_.close()
 
     def get_items(self, socket):
-        filenames = [filenames for (_, _, filenames) in os.walk(self.db_dir)][0]
+        filenames = [filenames for (_, _, filenames) in os.walk('./database')][0]
         filenames = [item.replace('.fasta', '') for item in filenames]
         data = pc.dumps(filenames)
         message_size = st.pack('i', len(data))
         socket.send(message_size + data)
+        sleep(0.01)
 
     def get_file(self, socket):
         name = socket.recv(1024).decode()
-
-        with open(self.db_dir + name + '.fasta', 'r') as arq:
-            lenght = arq.read(1024)
-            while lenght:
-                time.sleep(0.01)
-                socket.send(lenght.encode())
-                lenght = arq.read(1024)
+        sleep(0.01)
+        
+        with open(f'./database/{name}.fasta', 'rb') as arq:
+            while True:
+                line = arq.read(1024)
+                if not line:
+                    break
+                socket.send(line)
+                sleep(0.01)
 
     def set_file(self, socket):
         name = socket.recv(1024).decode()
+        sleep(0.01)
 
-        if os.path.exists(f'{self.db_dir} + {name} + .fasta'):
-            exit()
-
-        genoma = socket.recv(1024).decode()
-
-        with open(self.db_dir + name + '.fasta', 'w') as arq:
-            arq.write(genoma)
-        return 1
+        with open(f'./database/{name}.fasta', 'wb') as arq:
+            while True:
+                data = socket.recv(1024)
+                sleep(0.01)
+                if not data:
+                    break
+                arq.write(data)
