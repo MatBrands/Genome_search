@@ -1,14 +1,7 @@
 from socket import *
-from threading import Thread
+from _thread import start_new_thread
 from os import walk, system
 from time import sleep
-
-class ClientThread(Thread):
-    def __init__(self, clientSocket, clientAddress):
-        Thread.__init__(self)
-        self.clientSocket = clientSocket
-        self.clientAddress = clientAddress
-        print (f'Novo cliente conectado: {clientAddress}')
 
 class SocketServer:
     def __init__(self, host=gethostbyname(gethostname()), port=55552):
@@ -30,21 +23,24 @@ class SocketServer:
     def startServer(self):
         while True:
             clientSocket, clientAdress = self.socket.accept()
-            new_client = ClientThread(clientSocket, clientAdress)
-            while True:
-                message = new_client.clientSocket.recv(1024).decode()
-                sleep(0.01)
-                
-                if message == 'get_items':
-                    self.get_items(new_client.clientSocket)
-                if message == 'set_file':
-                    self.set_file(new_client.clientSocket)
-                if message == 'get_file':
-                    self.get_file(new_client.clientSocket)
-                if message == 'close':
-                    break
-            print (f'Cliente {new_client.clientAddress} disconectou ...\n')
-            new_client.clientSocket.close()
+            start_new_thread(self.new_client,(clientSocket, clientAdress))
+
+    def new_client(self, clientSocket, clientAdress):
+        print (f'Novo cliente {clientAdress[0]}:{clientAdress[1]}')
+        while True:
+            message = clientSocket.recv(1024).decode()
+            sleep(0.01)
+            
+            if message == 'get_items':
+                self.get_items(clientSocket)
+            if message == 'set_file':
+                self.set_file(clientSocket)
+            if message == 'get_file':
+                self.get_file(clientSocket)
+            if message == 'close':
+                break
+        print (f'Cliente {clientAdress[0]}:{clientAdress[1]} disconectou ...')
+        clientSocket.close()
 
     def get_items(self, socket):
         filenames = [filenames for (_, _, filenames) in walk('./database')][0]
