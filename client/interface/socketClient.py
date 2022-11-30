@@ -5,22 +5,18 @@ from time import sleep
 
 class SocketClient:
     def __init__(self, host=gethostbyname(gethostname()), port=55552):
-        self.host = host
-        self.port = port
+        self.setup(host, port)
 
     def setup(self, host: str, port: int):
         self.socket = socket(AF_INET, SOCK_STREAM)
-
         try:
             self.socket.connect((host, port))
-            return True
         except ConnectionRefusedError:
-            return False
+            print('Servidor não encontrado')
+            exit()
 
-    def get_items(self):
-        self.setup(self.host, self.port)
-        self.socket.send(b'get_items')
-
+    def get_items(self, arg='get_items'):
+        self.socket.send(arg.encode())
         data = b''
         payload_size = st.calcsize('i')
 
@@ -37,14 +33,10 @@ class SocketClient:
         items = data[:message_size]
         data = data[message_size:]
 
-        self.socket.close()
-
         return pc.loads(items)
 
-    def get_file(self, name: str):
-        self.setup(self.host, self.port)
-        
-        self.socket.send(b'get_file')
+    def get_file(self, name: str, arg='get_file'):
+        self.socket.send(arg.encode())
         sleep(0.01)
         
         self.socket.send(name.encode())
@@ -54,16 +46,12 @@ class SocketClient:
             while True:
                 data = self.socket.recv(1024)
                 sleep(0.01)
-                if not data:
+                if data == b'stop':
                     break
                 arq.write(data)
 
-        self.socket.close()
-
-    def set_file(self, name, genoma):
-        self.setup(self.host, self.port)
-        
-        self.socket.send(b'set_file')
+    def set_file(self, name, genoma, arg='set_file'):
+        self.socket.send(arg.encode())
         sleep(0.01)
 
         self.socket.send(name.encode())
@@ -72,9 +60,12 @@ class SocketClient:
         with open(f'./storage/{genoma}.fasta', 'rb') as arq:
             while True:
                 line = arq.read(1024)
-                if not line:
-                    break
                 self.socket.send(line)
                 sleep(0.01)
-
+                if not line:
+                    self.socket.send(b'stop')
+                    break
+        
+    def close(self, arg='close'):
+        self.socket.send(arg.encode())
         self.socket.close()

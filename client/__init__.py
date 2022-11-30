@@ -73,10 +73,6 @@ def cadastrar_genoma(socket):
 if __name__ == '__main__':
     client_socket = SocketClient()
 
-    if not client_socket.setup(host=gethostbyname(gethostname()), port=55552):
-        print('Servidor não encontrado')
-        exit()
-
     title = ['Selecione uma opção: ']
     itens = ['Buscar genoma (Download)', 'Cadastrar genoma (Upload)', 'Sair']
     while True:
@@ -87,4 +83,5 @@ if __name__ == '__main__':
         elif menu_item == 1:
             cadastrar_genoma(client_socket)
         else:
+            client_socket.close()
             break
