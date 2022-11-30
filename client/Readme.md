@@ -159,4 +159,4 @@ def close(self, arg='close'):
 
 ## Main
 
-Utilizamos diversas telas de menus para selecionar as informações que desejamos enviar para o servidos.
+Utilizamos diversas telas de menus para selecionar as informações que desejamos enviar para o servidor.
