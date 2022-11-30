@@ -1,5 +1,5 @@
 from socket import *
-import os
+from os import walk, system
 import pickle as pc
 import struct as st
 from time import *
@@ -15,7 +15,7 @@ class SocketServer:
             self.socket.bind((host, port))
             print('Servidor ligando')
             sleep(1)
-            os.system('clear')
+            system('clear')
             print('Servidor aguardando conexão ...')
         except:
             print('Erro ao ligar o servidor!')
@@ -42,7 +42,7 @@ class SocketServer:
             connection_.close()
 
     def get_items(self, socket):
-        filenames = [filenames for (_, _, filenames) in os.walk('./database')][0]
+        filenames = [filenames for (_, _, filenames) in walk('./database')][0]
         filenames = [item.replace('.fasta', '') for item in filenames]
         data = pc.dumps(filenames)
         message_size = st.pack('i', len(data))
