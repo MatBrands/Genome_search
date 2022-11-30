@@ -43,7 +43,7 @@ class SocketServer:
                     self.get_file(new_client.clientSocket)
                 if message == 'close':
                     break
-            print (f'Cliente {new_client.clientAddress} disconectou ...')
+            print (f'Cliente {new_client.clientAddress} disconectou ...\n')
             new_client.clientSocket.close()
 
     def get_items(self, socket):
