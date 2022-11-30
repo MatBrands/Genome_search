@@ -1,8 +1,11 @@
 # Genome Search
+- Instituição: Universidade Estadual de Santa Cruz
+- Curso: Ciência da Computação
+- Disciplina: Rede de Computadores I
+- Docente: Jorge Lima de Oliveira Filho
+- Discentes: Luca Sacramento, Matheus Brandão.
 
-Este projeto tem como objetivo a conclusão da avaliação prática para a disciplina CET098 - Rede de Computadores I. 
-
-Ela consiste em uma aplicação cliente-servidor simulando o funcionamento de um buscador para genomas que a partir de seu nome científico ou popular retorna sua informação hereditária codificada em seu DNA em formato ".fasta", além da possibilidade de cadastrar novas espécies, armazenando-as em nosso banco de dados.
+Este projeto tem como objetivo a conclusão da avaliação prática para a disciplina CET098 - Rede de Computadores I. Ela consiste em uma aplicação cliente-servidor simulando o funcionamento de um buscador para genomas que a partir de seu nome científico ou popular retorna sua informação hereditária codificada em seu DNA no formato ".fasta", além da possibilidade de cadastro de novas espécies, armazenando-as em nosso sistema.
 
 Conteúdo:
 - Requisitos
@@ -10,11 +13,14 @@ Conteúdo:
 - Integrantes
 - Instalação
 - Organização do projeto
+- Protocolo
+- Diagrama
+- Motivações
 - Contribuições
 
 ## Requisitos:
-- [ ] Comunicação via TCP ou UDP;
-- [ ] Documentação do protocolo da camada de aplicação;
+- [x] Comunicação via TCP ou UDP;
+- [x] Documentação do protocolo da camada de aplicação;
 - [ ] Documentação do funcionamento do software.
 
 ## Recomendações
@@ -26,14 +32,12 @@ Conteúdo:
     - Commits de remoção. Ex: git commit -m "Removed: Readme"
 
 ## Integrantes
-
 Projeto desenvolvido pelos Devs:
 
 - [Luca Sacramento](https://github.com/lucasao98)
 - [Matheus Brandão](https://github.com/MatBrands)
 
 ## Instalação
-
 No desenvolvimento foi utilizado o gerenciador de pacotes e ambientes [Conda](https://conda.io/). Portanto para prosseguir necessita-se de sua [instalação](https://conda.io/projects/conda/en/latest/user-guide/install/index.html).
 
 - Instalar dependências
@@ -53,25 +57,94 @@ conda deactivate
 
 ## Organização do projeto
 
+### O funcionamento detalhado encontra-se dentro de cada pasta no arquivo Readme.md
 
-
-Cliente ...
+#### Cliente
 
 ```sh
 ├── client
-│   ├── ...
-│   │   └── ...
+│   ├── interface
+│   │   ├── menuClass.py
+│   │   └── socketClient.py
+│   └── storage
+│       ├── abelha.fasta
+│       ├── cachorro.fasta
+│       ├── morcego.fasta
+│       └── panda.fasta
+│   ├── __init__.py
+│   ├── Readme.md
 ```
 
-Server ...
+#### Server
 
 ```sh
 ├── server
-│   ├── ...
-│   │   └── ...
+│   ├── interface
+│   │   └── socketServer.py
+│   └── database
+│       ├── abelha.fasta
+│       ├── cachorro.fasta
+│       ├── morcego.fasta
+│       └── panda.fasta
+│   ├── __init__.py
+│   ├── Readme.md
 ```
 
 
-## Contribuições
+## Protocolo
+Para execução e testes foi feita configuração para rede local, com nome 'localhost' e porta padrão 55552
+<div style="line-height: 2;">
+    <ol>
+        <li>Servidor é preparado e aguarda solicitações - O servidor aguarda novas solicitações;</li>
+        <li>Cliente ao ser inicializado solicita conexão - O cliente envia ao servidor uma solicitação de conexão do socket para iniciar as interações;</li>
+        <li>Servidor aceita a conexão - O servidor aceita a conexão solicitada pelo cliente e então aguarda informações para prosseguir;</li>
+        <li>Cliente solicita um conteúdo do servidor - O cliente envia uma solicitação para o servidor para começar a receber uma determinada informação;</li>
+        <ul>
+            <li>Cliente solicita genomas disponíveis - O cliente envia um 'get_items';</li>
+            <ul>
+                <li>Servidor calcula a quantidade de genomas existentes e envia seu tamanho para o Cliente;</li>
+                <li>Servidor envia cada nome de arquivo para o Cliente;</li>
+                <li>Cliente armazena cada nome de arquivo em uma lista.</li>
+            </ul>
+            <li>Cliente solicita download de um genomas catalogado - O cliente envia um 'get_files';</li>
+            <ul>
+                <li>Cliente envia o nome do arquivo para o Servidor;</li>
+                <li>Cliente verifica se o arquivo ja está baixado;</li>
+                <ul>
+                    <li>Caso exista envia uma mensagem para não prosseguir;</li>
+                    <li>Caso não exista envia uma mensagem para prosseguir.</li>
+                </ul>
+                <li>Servidor abre o arquivo .fasta para leitura binária;</li>
+                <li>Cliente abre o arquivo .fasta para escrita binária;</li>
+                <li>Servidor envia linha por linha suas informações;</li>
+                <li>Cliente escreve linha por linha suas informações;</li>
+                <li>Servidor envia uma mensagem 'stop' para finalização.</li>
+            </ul>
+            <li>Cliente solicita cadastrar um genoma - O cliente envia um 'set_files';</li>
+            <ul>
+                <li>Cliente envia o nome do arquivo para o Servidor;</li>
+                <li>Servidor verifica se o arquivo ja está catalogado;</li>
+                <ul>
+                    <li>Caso exista envia uma mensagem para não prosseguir;</li>
+                    <li>Caso não exista envia uma mensagem para prosseguir.</li>
+                </ul>
+                <li>Cliente abre o arquivo .fasta para leitura binária;</li>
+                <li>Servidor abre o arquivo .fasta para escrita binária;</li>
+                <li>Cliente envia linha por linha suas informações;</li>
+                <li>Servidor escreve linha por linha suas informações;</li>
+                <li>Cliente envia uma mensagem 'stop' para finalização.</li>
+            </ul>
+        </ul>
+        <li>Cliente pode repetir o passo 4 repetidamente;</li>
+        <li>Cliente encerra a conexão - O cliente envia um 'close'.</li>
+    </ol>
+</div>
 
-Ressaltar contribuições que julgar relevantes.
+## Diagrama
+
+
+## Motivações
+O protocolo escolhido foi o TCP por conta de garantir maior integradade na tranferência de dados, evitando perdas. A implementação dos recursos de Multi-Thread foram feitos para tentar simular um uso real da aplicação, onde diversos clientes se comunicariam com esse serviço.
+
+## Contribuições
+Ao longo do desenvolvimento do projeto pode-se pontuar a leitura constante da documentação das bibliotecas Sockets e Thread_, e por fim pesquisar em fóruns e sites por aplicações que utilizavam essas ferramentas para melhor entendimento e exemplificação.
