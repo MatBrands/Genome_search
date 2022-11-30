@@ -1,6 +1,6 @@
 from socket import *
 from _thread import start_new_thread
-from os import walk, system
+from os import walk, system, path
 from time import sleep
 
 class SocketServer:
@@ -26,7 +26,7 @@ class SocketServer:
                 clientSocket, clientAdress = self.socket.accept()
                 start_new_thread(self.new_client,(clientSocket, clientAdress))
             except KeyboardInterrupt:
-                print('Desligando servidor ...')
+                print('\nDesligando servidor ...')
                 self.socket.close()
                 exit()
 
@@ -34,7 +34,7 @@ class SocketServer:
         print (f'Novo cliente {clientAdress[0]}:{clientAdress[1]}')
         while True:
             message = clientSocket.recv(1024).decode()
-            sleep(0.01)
+            sleep(0.05)
             
             if message == 'get_items':
                 self.get_items(clientSocket)
@@ -52,35 +52,50 @@ class SocketServer:
         filenames = [item.replace('.fasta', '') for item in filenames]
         length = len(filenames)
         socket.send(str(length).encode())
-        sleep(0.01)
+        sleep(0.05)
         
         if not length:
             return
         
         for item in filenames:
             socket.send(item.encode())
-            sleep(0.01)
+            sleep(0.05)
         
     def get_file(self, socket):
         name = socket.recv(1024).decode()
-        sleep(0.01)
+        sleep(0.05)
+        
+        status = socket.recv(1024).decode()
+        sleep(0.05)
+        
+        if status == 'over':
+            return
+            
         with open(f'./database/{name}.fasta', 'rb') as arq:
             while True:
                 line = arq.read(1024)
                 socket.send(line)
-                sleep(0.01)
+                sleep(0.05)
                 if not line:
                     socket.send(b'stop')
                     break
 
     def set_file(self, socket):
         name = socket.recv(1024).decode()
-        sleep(0.01)
+        sleep(0.05)
+
+        if path.exists(f'./database/{name}.fasta'):
+            socket.send(b'over')
+            sleep(0.05)
+            return
+        else:
+            socket.send(b'Ok')
+            sleep(0.05)
 
         with open(f'./database/{name}.fasta', 'wb') as arq:
             while True:
                 data = socket.recv(1024)
-                sleep(0.01)
+                sleep(0.05)
                 if data == b'stop':
                     break
                 arq.write(data)

@@ -41,7 +41,6 @@ def buscar_genoma(socket, name, list_of_items_db):
 
     if menu_item != len(resultado) - 1:
         socket.get_file(resultado[menu_item])
-        input(f'Download do genoma {resultado[menu_item]} foi um sucesso')
 
 def cadastrar_genoma(socket):
     nome_especie = input('Digite o nome científico da espécie\n')
@@ -69,7 +68,6 @@ def cadastrar_genoma(socket):
         return
     
     socket.set_file(nome, genoma_especie)
-    input(f'Upload do genoma {nome} foi cadastrado')
 
 if __name__ == '__main__':
     client_socket = SocketClient()
