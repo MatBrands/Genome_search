@@ -1,5 +1,6 @@
 from interface.socketClient import *
 from interface.menuClass import *
+from os import system
 
 def parametros_menu(titulo: list, itens: list):
     menu = Menu()
@@ -73,15 +74,17 @@ def cadastrar_genoma(socket):
 if __name__ == '__main__':
     client_socket = SocketClient()
 
-    title = ['Selecione uma opção: ']
-    itens = ['Buscar genoma (Download)', 'Cadastrar genoma (Upload)', 'Sair']
     while True:
-        menu_item = parametros_menu(title, itens)
-
-        if menu_item == 0:
-            menu_genoma(client_socket)
-        elif menu_item == 1:
-            cadastrar_genoma(client_socket)
-        else:
+        try:
+            menu_item = parametros_menu(['Selecione uma opção: '], ['Buscar genoma (Download)', 'Cadastrar genoma (Upload)', 'Sair'])
+            if menu_item == 0:
+                menu_genoma(client_socket)
+            elif menu_item == 1:
+                cadastrar_genoma(client_socket)
+            else:
+                client_socket.close()
+                break
+        except KeyboardInterrupt:
             client_socket.close()
-            break
+            system('clear')
+            exit()

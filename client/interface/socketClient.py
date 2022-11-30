@@ -1,6 +1,4 @@
 from socket import *
-import pickle as pc
-import struct as st
 from time import sleep
 
 class SocketClient:
@@ -17,23 +15,17 @@ class SocketClient:
 
     def get_items(self, arg='get_items'):
         self.socket.send(arg.encode())
-        data = b''
-        payload_size = st.calcsize('i')
-
-        while len(data) < payload_size:
-            data += self.socket.recv(1024 * 100)
-
-        packed_message_size = data[:payload_size]
-        data = data[payload_size:]
-        message_size = st.unpack('i', packed_message_size)[0]
-
-        while len(data) < message_size:
-            data += self.socket.recv(1024 * 100)
-
-        items = data[:message_size]
-        data = data[message_size:]
-
-        return pc.loads(items)
+        sleep(0.01)
+        
+        length = int(self.socket.recv(1024).decode())
+        sleep(0.01)
+        
+        result = []
+        if length:
+            for _ in range (length):
+                result.append(self.socket.recv(1024).decode())
+                sleep(0.01)
+        return result
 
     def get_file(self, name: str, arg='get_file'):
         self.socket.send(arg.encode())

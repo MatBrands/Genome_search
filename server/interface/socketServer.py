@@ -1,8 +1,6 @@
 from socket import *
 from threading import Thread
 from os import walk, system
-import pickle as pc
-import struct as st
 from time import sleep
 
 class ClientThread(Thread):
@@ -45,15 +43,22 @@ class SocketServer:
                     self.get_file(new_client.clientSocket)
                 if message == 'close':
                     break
+            print (f'Cliente {new_client.clientAddress} disconectou ...')
             new_client.clientSocket.close()
 
     def get_items(self, socket):
         filenames = [filenames for (_, _, filenames) in walk('./database')][0]
         filenames = [item.replace('.fasta', '') for item in filenames]
-        data = pc.dumps(filenames)
-        message_size = st.pack('i', len(data))
-        socket.send(message_size + data)
+        length = len(filenames)
+        socket.send(str(length).encode())
         sleep(0.01)
+        
+        if not length:
+            return
+        
+        for item in filenames:
+            socket.send(item.encode())
+            sleep(0.01)
         
     def get_file(self, socket):
         name = socket.recv(1024).decode()

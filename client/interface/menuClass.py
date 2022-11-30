@@ -4,9 +4,6 @@ from pynput import keyboard
 
 
 class Menu:
-    def __init__(self):
-        pass
-
     def on_press(self, key):
         if str(key) == 'Key.up':
             self.option -= 1
