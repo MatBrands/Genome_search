@@ -21,7 +21,7 @@ Conteúdo:
 ## Requisitos:
 - [x] Comunicação via TCP ou UDP;
 - [x] Documentação do protocolo da camada de aplicação;
-- [ ] Documentação do funcionamento do software.
+- [x] Documentação do funcionamento do software.
 
 ## Recomendações
 - Cada desenvolvedor terá sua branch para ficar a vontade para inserir novas funcionalidades ao projeto.
