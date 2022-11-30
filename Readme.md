@@ -38,6 +38,8 @@ Projeto desenvolvido pelos Devs:
 - [Matheus Brandão](https://github.com/MatBrands)
 
 ## Instalação
+
+### Conda
 No desenvolvimento foi utilizado o gerenciador de pacotes e ambientes [Conda](https://conda.io/). Portanto para prosseguir necessita-se de sua [instalação](https://conda.io/projects/conda/en/latest/user-guide/install/index.html).
 
 - Instalar dependências
@@ -45,14 +47,37 @@ No desenvolvimento foi utilizado o gerenciador de pacotes e ambientes [Conda](ht
 conda env create enviroment.yml
 ```
 
-- Ativação
+- Ativar
 ```sh
 conda activate genome_search-venv
 ```
 
-- Desativação
+- Desativar
 ```sh
 conda deactivate
+```
+
+### Requirements
+Pode-se utilizar o arquivo requiremets.txt para criar o ambiente virtual.
+
+- Criar ambiente virtual
+```sh
+python -m venv genome_search-venv
+```
+
+- Ativar
+```sh
+source ./genome_search-venv/bin/activate
+```
+
+- Instalar dependências
+```sh
+pip install -r requirements.txt
+```
+
+- Desativar
+```sh
+deactivate
 ```
 
 ## Organização do projeto
