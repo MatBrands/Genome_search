@@ -31,13 +31,16 @@ def buscar_genoma(socket, name, list_of_items_db):
         if name in item:
             resultado.append(item)
 
-    if len(resultado) > 0:
-        resultado.append('Retornar')
-        menu_item = parametros_menu(['Selecione o genoma para download: '], resultado)
+    if not resultado:
+        input('Espécie não catalogada')
+        return
 
-        if menu_item != len(resultado) - 1:
-            socket.get_file(resultado[menu_item])
-            input(f'Download do genoma {resultado[menu_item]} foi um sucesso')
+    resultado.append('Retornar')
+    menu_item = parametros_menu(['Selecione o genoma para download: '], resultado)
+
+    if menu_item != len(resultado) - 1:
+        socket.get_file(resultado[menu_item])
+        input(f'Download do genoma {resultado[menu_item]} foi um sucesso')
 
 def cadastrar_genoma(socket):
     nome_especie = input('Digite o nome científico da espécie\n')
@@ -55,10 +58,14 @@ def cadastrar_genoma(socket):
     if not filenames:
         input('Erro ! Arquivos inválidos, tecle para sair ...\n')
         return
+    filenames.append('Retornar')
     
     nome = f'{nome_especie}: {nome_popular}'
     genoma_especie = parametros_menu(['Selecione o arquivo que deseja enviar:'], filenames)
     genoma_especie = filenames[genoma_especie]
+    
+    if genoma_especie == 'Retornar':
+        return
     
     socket.set_file(nome, genoma_especie)
     input(f'Upload do genoma {nome} foi cadastrado')
