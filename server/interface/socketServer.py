@@ -30,7 +30,8 @@ class SocketServer:
             connection_, addr = self.socket.accept()
             print(f'Cliente: {addr} conectado')
             message = connection_.recv(1024).decode()
-
+            sleep(0.01)
+            
             if message == 'get_items':
                 self.get_items(connection_)
             elif message == 'set_file':

@@ -1,7 +1,5 @@
 from interface.socketClient import *
 from interface.menuClass import *
-import time
-
 
 def parametros_menu(titulo: list, itens: list):
     menu = Menu()
@@ -9,7 +7,6 @@ def parametros_menu(titulo: list, itens: list):
     menu.setItems(itens)
     option = menu.iniciarMenu()
     return option
-
 
 def menu_genoma(socket):
     list_of_items_db = socket.get_items()
@@ -24,9 +21,9 @@ def menu_genoma(socket):
         elif menu_item == 1:
             name = input('Digite o nome científico ou o popular: \n')
             buscar_genoma(socket, name, list_of_items_db)
-            break
+            return
         else:
-            break
+            return
 
 def buscar_genoma(socket, name, list_of_items_db):
     resultado = []
@@ -40,8 +37,7 @@ def buscar_genoma(socket, name, list_of_items_db):
 
         if menu_item != len(resultado) - 1:
             socket.get_file(resultado[menu_item])
-            print(f'Download do genoma {resultado[menu_item]} foi um sucesso')
-            input()
+            input(f'Download do genoma {resultado[menu_item]} foi um sucesso')
 
 def cadastrar_genoma(socket):
     nome_especie = input('Digite o nome científico da espécie\n')
@@ -66,7 +62,6 @@ def cadastrar_genoma(socket):
     
     socket.set_file(nome, genoma_especie)
     input(f'Upload do genoma {nome} foi cadastrado')
-
 
 if __name__ == '__main__':
     client_socket = SocketClient()

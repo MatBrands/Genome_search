@@ -1,9 +1,7 @@
 from socket import *
 import pickle as pc
 import struct as st
-import os
 from time import sleep
-
 
 class SocketClient:
     def __init__(self, host=gethostbyname(gethostname()), port=55552):
