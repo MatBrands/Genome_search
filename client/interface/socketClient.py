@@ -1,6 +1,6 @@
 from socket import *
-from time import sleep
 from os import path
+from time import sleep
 
 class SocketClient:
     def __init__(self, host=gethostbyname(gethostname()), port=55552):
