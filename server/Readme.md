@@ -25,7 +25,7 @@ from time import sleep
 
 ### Funcionamento
 
-#### Construtor da classe:
+#### Construtor da classe
 
 - Inicializa a configuração do socket com o host e a porta que o servidor irá rodar;
 - O host pode ser alterado pelo ip, possibilitando conexão entre outros dispositivos.
