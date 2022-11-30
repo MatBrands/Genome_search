@@ -1,11 +1,11 @@
 # Genome Search
 - Instituição: Universidade Estadual de Santa Cruz
 - Curso: Ciência da Computação
-- Disciplina: Rede de Computadores I
+- Disciplina: CET098 - Rede de Computadores I
 - Docente: Jorge Lima de Oliveira Filho
 - Discentes: Luca Sacramento, Matheus Brandão.
 
-Este projeto tem como objetivo a conclusão da avaliação prática para a disciplina CET098 - Rede de Computadores I. Ela consiste em uma aplicação cliente-servidor simulando o funcionamento de um buscador para genomas que a partir de seu nome científico ou popular retorna sua informação hereditária codificada em seu DNA no formato ".fasta", além da possibilidade de cadastro de novas espécies, armazenando-as em nosso sistema.
+Este projeto tem como objetivo a conclusão da avaliação prática para a disciplina. Ela consiste em uma aplicação cliente-servidor simulando o funcionamento de um buscador para genomas que a partir de seu nome científico ou popular retorna sua informação hereditária codificada em seu DNA no formato ".fasta", além da possibilidade de cadastro de novas espécies, armazenando-as em nosso sistema.
 
 Conteúdo:
 - Requisitos
