@@ -22,8 +22,13 @@ class SocketServer:
 
     def startServer(self):
         while True:
-            clientSocket, clientAdress = self.socket.accept()
-            start_new_thread(self.new_client,(clientSocket, clientAdress))
+            try:
+                clientSocket, clientAdress = self.socket.accept()
+                start_new_thread(self.new_client,(clientSocket, clientAdress))
+            except KeyboardInterrupt:
+                print('Desligando servidor ...')
+                self.socket.close()
+                exit()
 
     def new_client(self, clientSocket, clientAdress):
         print (f'Novo cliente {clientAdress[0]}:{clientAdress[1]}')
