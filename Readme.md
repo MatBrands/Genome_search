@@ -166,7 +166,7 @@ Para execução e testes foi feita configuração para rede local, com nome 'loc
 </div>
 
 ## Diagrama
-
+![Fluxograma](https://raw.githubusercontent.com/MatBrands/Genome_search/2f0c21104e7f6e8ad06d914e132b29d8891e40cb/utils/Fluxograma_redes_I.svg)
 
 ## Motivações
 O protocolo escolhido foi o TCP por conta de garantir maior integradade na tranferência de dados, evitando perdas. A implementação dos recursos de Multi-Thread foram feitos para tentar simular um uso real da aplicação, onde diversos clientes se comunicariam com esse serviço.
