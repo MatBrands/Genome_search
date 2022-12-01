@@ -4,22 +4,22 @@
 ### Bibliotecas
 
 - Socket, possibilita a montagem e configuração do socket de rede.
-```sh
+```py
 from socket import *
 ```
 
 - Thread, possibilita o servidor comunicar com mais de um cliente ao mesmo tempo na rede.
-```sh
+```py
 from _thread import start_new_thread
 ```
 
 - OS, possibilita acessar funcionalidades do sistema (ex:. Pastas, Limpar terminal, Etc).
-```sh
+```py
 from os import walk, system, path
 ```
 
 - Time, possibilita pausar o sistema, utilizado para poder ter intervalos entre as mensagens enviadas.
-```sh
+```py
 from time import sleep
 ```
 
@@ -30,7 +30,7 @@ from time import sleep
 - Inicializa a configuração do socket com o host e a porta que o servidor irá rodar;
 - O host pode ser alterado pelo ip, possibilitando conexão entre outros dispositivos.
 
-```sh
+```py
 def __init__(self, host=gethostbyname(gethostname()), port=55552):
     self.setup(host, port)
 ```
@@ -39,7 +39,7 @@ def __init__(self, host=gethostbyname(gethostname()), port=55552):
 
 - Configura o socket com um protocolo TCP.
 
-```sh
+```py
 def setup(self, host: str, port: int):
     self.socket = socket(AF_INET, SOCK_STREAM)
     try:
@@ -60,7 +60,7 @@ def setup(self, host: str, port: int):
 - Caso o programa seja encerrado, imprimirá mensagem avisando o desligamento do Server;
 - Ao iniciar a conexão inicia uma nova Thread para o Client.
 
-```sh
+```py
 def startServer(self):
     while True:
         try:
@@ -77,7 +77,7 @@ def startServer(self):
 - Informa o endereço e porta do cliente conectado;
 - Aguarda mensagem do protocolo de aplicação para iniciar troca de informações.
 
-```sh
+```py
 def new_client(self, clientSocket, clientAdress):
     print (f'Novo cliente {clientAdress[0]}:{clientAdress[1]}')
     while True:
@@ -103,7 +103,7 @@ def new_client(self, clientSocket, clientAdress):
 - Se não existir nenhum elemento encerra;
 - Envia o nome de seus elementos para o client.
 
-```sh
+```py
 def get_items(self, socket):
     filenames = [filenames for (_, _, filenames) in walk('./database')][0]
     filenames = [item.replace('.fasta', '') for item in filenames]
@@ -127,7 +127,7 @@ def get_items(self, socket):
 - Então abrimos o arquivo de maneira binária e enviamos linha por linha;
 - Ao finalizar enviamos uma flag para encerrar 'stop'.
 
-```sh
+```py
 def get_file(self, socket):
     name = socket.recv(1024).decode()
     sleep(0.05)
@@ -154,7 +154,7 @@ def get_file(self, socket):
 - Se o genoma ja estiver catalogado enviamos uma flag informando e encerramos;
 - Abrimos um arquivo binário com seu nome em modo de escrita e escrevemos linha por linha, caso receba a flag 'stop' finalizamos.
 
-```sh
+```py
 def set_file(self, socket):
     name = socket.recv(1024).decode()
     sleep(0.05)
@@ -177,7 +177,7 @@ def set_file(self, socket):
 ```
 
 ## Main
-```sh
+```py
 from interface.socketServer import *
 
 if __name__ == '__main__':

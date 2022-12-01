@@ -13,17 +13,17 @@ Podemos percorrer os itens do menu com as setas do teclado e escolhermos com o '
 ### Bibliotecas
 
 - Socket, possibilita a montagem e configuração do socket de rede.
-```sh
+```py
 from socket import *
 ```
 
 - OS, possibilita acessar funcionalidades do sistema (ex:. Pastas, Limpar terminal, Etc).
-```sh
+```py
 from os import path
 ```
 
 - Time, possibilita pausar o sistema, utilizado para poder ter intervalos entre as mensagens enviadas.
-```sh
+```py
 from time import sleep
 ```
 
@@ -33,7 +33,7 @@ from time import sleep
 
 - Inicializa a configuração do socket com o host e a porta que o cliente irá conectar.
 
-```sh
+```py
 def __init__(self, host=gethostbyname(gethostname()), port=55552):
     self.setup(host, port)
 ```
@@ -42,7 +42,7 @@ def __init__(self, host=gethostbyname(gethostname()), port=55552):
 
 - Configura o socket para se conectar ao servidor.
 
-```sh
+```py
 def setup(self, host: str, port: int):
     self.socket = socket(AF_INET, SOCK_STREAM)
     try:
@@ -59,7 +59,7 @@ def setup(self, host: str, port: int):
 - Criamos uma lista e adicionamos seus elementos;
 - Retornamos essa lista.
 
-```sh
+```py
 def get_items(self, arg='get_items'):
     self.socket.send(arg.encode())
     sleep(0.05)
@@ -83,7 +83,7 @@ def get_items(self, arg='get_items'):
 - Então abrimos o arquivo de maneira binária e enviamos linha por linha;
 - Ao finalizar enviamos uma flag para encerrar 'stop'.
 
-```sh
+```py
 def get_file(self, name: str, arg='get_file'):
     self.socket.send(arg.encode())
     sleep(0.05)
@@ -120,7 +120,7 @@ def get_file(self, name: str, arg='get_file'):
 - Então abrimos o arquivo para leitura binária e enviamos linha por linha;
 - Ao finalizar enviamos uma flag para encerrar 'stop'.
 
-```sh
+```py
 def set_file(self, name, genoma, arg='set_file'):
     self.socket.send(arg.encode())
     sleep(0.05)
@@ -151,7 +151,7 @@ def set_file(self, name, genoma, arg='set_file'):
 - Envia a mensagem do protocolo de aplicação para iniciar a operação;
 - Encerra a conexão do socket.
 
-```sh
+```py
 def close(self, arg='close'):
     self.socket.send(arg.encode())
     self.socket.close()
