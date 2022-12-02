@@ -44,7 +44,7 @@ No desenvolvimento foi utilizado o gerenciador de pacotes e ambientes [Conda](ht
 
 - Instalar dependências
 ```sh
-conda env create enviroment.yml
+conda env create environment.yml
 ```
 
 - Ativar
