@@ -34,7 +34,7 @@ from time import sleep
 - Inicializa a configuração do socket com o host e a porta que o cliente irá conectar.
 
 ```py
-def __init__(self, host=gethostbyname(gethostname()), port=55552):
+def __init__(self, host=gethostname(), port=55552):
     self.setup(host, port)
 ```
 

@@ -31,7 +31,7 @@ from time import sleep
 - O host pode ser alterado pelo ip, possibilitando conexão entre outros dispositivos.
 
 ```py
-def __init__(self, host=gethostbyname(gethostname()), port=55552):
+def __init__(self, host=gethostname(), port=55552):
     self.setup(host, port)
 ```
 

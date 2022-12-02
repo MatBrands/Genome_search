@@ -3,7 +3,7 @@ from os import path
 from time import sleep
 
 class SocketClient:
-    def __init__(self, host=gethostbyname(gethostname()), port=55552):
+    def __init__(self, host=gethostname(), port=55552):
         self.setup(host, port)
 
     def setup(self, host: str, port: int):
