@@ -31,7 +31,7 @@ from time import sleep
 - O host pode ser alterado pelo ip, possibilitando conexão entre outros dispositivos.
 
 ```py
-def __init__(self, host=gethostname(), port=55552):
+def __init__(self, host='localhost', port=55552):
     self.setup(host, port)
 ```
 
@@ -48,6 +48,7 @@ def setup(self, host: str, port: int):
         sleep(1)
         system('clear')
         print('Servidor aguardando conexão ...')
+        print(f'{host}:{port}')
     except:
         print('Erro ao ligar o servidor!')
         exit()
