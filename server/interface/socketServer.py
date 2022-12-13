@@ -44,7 +44,7 @@ class SocketServer:
                 self.get_file(clientSocket)
             if message == 'close':
                 break
-        print (f'Cliente {clientAdress[0]}:{clientAdress[1]} disconectou ...')
+        print (f'Cliente {clientAdress[0]}:{clientAdress[1]} desconectou ...')
         clientSocket.close()
 
     def get_items(self, socket):
