@@ -16,38 +16,38 @@ class SocketClient:
 
     def get_items(self, arg='get_items'):
         self.socket.send(arg.encode())
-        sleep(0.05)
+        sleep(0.1)
         
         length = int(self.socket.recv(1024).decode())
-        sleep(0.05)
+        sleep(0.1)
         
         result = []
         if length:
             for _ in range (length):
                 result.append(self.socket.recv(1024).decode())
-                sleep(0.05)
+                sleep(0.1)
         return result
 
     def get_file(self, name: str, arg='get_file'):
         self.socket.send(arg.encode())
-        sleep(0.05)
+        sleep(0.1)
         
         self.socket.send(name.encode())
-        sleep(0.05)
+        sleep(0.1)
         
         if path.exists(f'./storage/{name}.fasta'):
             self.socket.send(b'over')
-            sleep(0.05)
+            sleep(0.1)
             input('Erro ! Arquivo ja existe')
             return
         else:
             self.socket.send(b'Ok')
-            sleep(0.05)
+            sleep(0.1)
             
         with open(f'./storage/{name}.fasta', 'wb') as arq:    
             while True:
                 data = self.socket.recv(1024)
-                sleep(0.05)
+                sleep(0.1)
                 if data == b'stop':
                     break
                 arq.write(data)
@@ -56,13 +56,13 @@ class SocketClient:
 
     def set_file(self, name, genoma, arg='set_file'):
         self.socket.send(arg.encode())
-        sleep(0.05)
+        sleep(0.1)
 
         self.socket.send(name.encode())
-        sleep(0.05)
+        sleep(0.1)
 
         status = self.socket.recv(1024).decode()
-        sleep(0.05)
+        sleep(0.1)
         
         if status == 'over':
             input(f'Erro {genoma} ja esta cadastrado')
@@ -72,7 +72,7 @@ class SocketClient:
             while True:
                 line = arq.read(1024)
                 self.socket.send(line)
-                sleep(0.05)
+                sleep(0.1)
                 if not line:
                     self.socket.send(b'stop')
                     break
