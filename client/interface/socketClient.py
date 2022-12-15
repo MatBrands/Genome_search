@@ -36,13 +36,14 @@ class SocketClient:
         sleep(0.1)
         
         if path.exists(f'./storage/{name}.fasta'):
+            sleep(0.1)
             self.socket.send(b'over')
             sleep(0.1)
             input('Erro ! Arquivo ja existe')
             return
-        else:
-            self.socket.send(b'Ok')
-            sleep(0.1)
+        
+        self.socket.send(b'Ok')
+        sleep(0.1)
             
         with open(f'./storage/{name}.fasta', 'wb') as arq:    
             while True:

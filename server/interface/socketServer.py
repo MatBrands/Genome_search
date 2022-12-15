@@ -86,6 +86,7 @@ class SocketServer:
         sleep(0.1)
 
         if path.exists(f'./database/{name}.fasta'):
+            sleep(0.1)
             socket.send(b'over')
             sleep(0.1)
             return

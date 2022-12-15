@@ -70,7 +70,7 @@ def cadastrar_genoma(socket):
     socket.set_file(nome, genoma_especie)
 
 if __name__ == '__main__':
-    client_socket = SocketClient()
+    client_socket = SocketClient(host='10.0.0.188')
 
     while True:
         try:
