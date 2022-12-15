@@ -90,9 +90,9 @@ class SocketServer:
             socket.send(b'over')
             sleep(0.1)
             return
-        else:
-            socket.send(b'Ok')
-            sleep(0.1)
+        
+        socket.send(b'Ok')
+        sleep(0.1)
 
         with open(f'./database/{name}.fasta', 'wb') as arq:
             while True:

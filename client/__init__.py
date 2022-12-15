@@ -56,7 +56,7 @@ def cadastrar_genoma(socket):
     filenames = [item.replace('.fasta', '') for item in filenames]
     
     if not filenames:
-        input('Erro ! Arquivos inválidos, tecle para sair ...\n')
+        input('Erro ! Não existem arquivos para catalogar, tecle para sair ...\n')
         return
     filenames.append('Retornar')
     

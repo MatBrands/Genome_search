@@ -83,7 +83,7 @@ def new_client(self, clientSocket, clientAdress):
     print (f'Novo cliente {clientAdress[0]}:{clientAdress[1]}')
     while True:
         message = clientSocket.recv(1024).decode()
-        sleep(0.05)
+        sleep(0.1)
         
         if message == 'get_items':
             self.get_items(clientSocket)
@@ -110,14 +110,14 @@ def get_items(self, socket):
     filenames = [item.replace('.fasta', '') for item in filenames]
     length = len(filenames)
     socket.send(str(length).encode())
-    sleep(0.05)
+    sleep(0.1)
     
     if not length:
         return
     
     for item in filenames:
         socket.send(item.encode())
-        sleep(0.05)
+        sleep(0.1)
 ```
 
 #### Baixar genoma
@@ -131,10 +131,10 @@ def get_items(self, socket):
 ```py
 def get_file(self, socket):
     name = socket.recv(1024).decode()
-    sleep(0.05)
+    sleep(0.1)
     
     status = socket.recv(1024).decode()
-    sleep(0.05)
+    sleep(0.1)
     
     if status == 'over':
         return
@@ -143,7 +143,7 @@ def get_file(self, socket):
         while True:
             line = arq.read(1024)
             socket.send(line)
-            sleep(0.05)
+            sleep(0.1)
             if not line:
                 socket.send(b'stop')
                 break
@@ -158,20 +158,21 @@ def get_file(self, socket):
 ```py
 def set_file(self, socket):
     name = socket.recv(1024).decode()
-    sleep(0.05)
+    sleep(0.1)
 
     if path.exists(f'./database/{name}.fasta'):
+        sleep(0.1)
         socket.send(b'over')
-        sleep(0.05)
+        sleep(0.1)
         return
-    else:
-        socket.send(b'Ok')
-        sleep(0.05)
+    
+    socket.send(b'Ok')
+    sleep(0.1)
 
     with open(f'./database/{name}.fasta', 'wb') as arq:
         while True:
             data = socket.recv(1024)
-            sleep(0.05)
+            sleep(0.1)
             if data == b'stop':
                 break
             arq.write(data)
