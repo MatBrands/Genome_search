@@ -35,7 +35,7 @@ class SocketServer:
         print (f'Novo cliente {clientAdress[0]}:{clientAdress[1]}')
         while True:
             message = clientSocket.recv(1024).decode()
-            sleep(0.05)
+            sleep(0.1)
             
             if message == 'get_items':
                 self.get_items(clientSocket)
@@ -53,21 +53,21 @@ class SocketServer:
         filenames = [item.replace('.fasta', '') for item in filenames]
         length = len(filenames)
         socket.send(str(length).encode())
-        sleep(0.05)
+        sleep(0.1)
         
         if not length:
             return
         
         for item in filenames:
             socket.send(item.encode())
-            sleep(0.05)
+            sleep(0.1)
         
     def get_file(self, socket):
         name = socket.recv(1024).decode()
-        sleep(0.05)
+        sleep(0.1)
         
         status = socket.recv(1024).decode()
-        sleep(0.05)
+        sleep(0.1)
         
         if status == 'over':
             return
@@ -76,27 +76,27 @@ class SocketServer:
             while True:
                 line = arq.read(1024)
                 socket.send(line)
-                sleep(0.05)
+                sleep(0.1)
                 if not line:
                     socket.send(b'stop')
                     break
 
     def set_file(self, socket):
         name = socket.recv(1024).decode()
-        sleep(0.05)
+        sleep(0.1)
 
         if path.exists(f'./database/{name}.fasta'):
             socket.send(b'over')
-            sleep(0.05)
+            sleep(0.1)
             return
         else:
             socket.send(b'Ok')
-            sleep(0.05)
+            sleep(0.1)
 
         with open(f'./database/{name}.fasta', 'wb') as arq:
             while True:
                 data = socket.recv(1024)
-                sleep(0.05)
+                sleep(0.1)
                 if data == b'stop':
                     break
                 arq.write(data)
